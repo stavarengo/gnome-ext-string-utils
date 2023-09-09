@@ -1,0 +1,8 @@
+{
+  "name": "Strings",
+  "description": "Paste all kind of useful strings",
+  "uuid": "strings@lobau.io",
+  "shell-version": [
+    "45"
+  ]
+}
