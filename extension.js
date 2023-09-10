@@ -17,7 +17,6 @@
  */
 
 import GObject from 'gi://GObject';
-import Gdk from 'gi://Gdk';
 import St from 'gi://St';
 
 import {
