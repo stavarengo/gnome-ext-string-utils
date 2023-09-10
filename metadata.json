@@ -1,6 +1,6 @@
 {
   "name": "Strings",
-  "description": "Paste all kind of useful strings",
+  "description": "Copy all kind of useful strings like dates, lorem ipsum, random colors, etc.",
   "uuid": "strings@lobau.io",
   "shell-version": [
     "45"

@@ -38,8 +38,52 @@ const Indicator = GObject.registerClass(
                 style_class: 'system-status-icon',
             }));
 
+            // Date full
+            this.datefullmenu = new PopupMenu.PopupMenuItem('Date — Full');
+            this.datefullmenu.connect('activate', () => {
+                let datefull = new Date().toLocaleString('en-US', {
+                    weekday: 'long',
+                    day: "numeric",
+                    month: 'long',
+                    year: 'numeric'
+                })
+                this.copyString(datefull);
+            });
+            this.menu.addMenuItem(this.datefullmenu);
+
+            // Date YYYY-MM-DD
+            this.datemenu = new PopupMenu.PopupMenuItem('Date — YYYY-MM-DD');
+            this.datemenu.connect('activate', () => {
+                const now = new Date();
+                const offset = now.getTimezoneOffset();
+                const offsetDate = new Date(now.getTime() - (offset * 60 * 1000));
+                const dateyyyymmdd = offsetDate.toISOString().split('T')[0];
+
+                this.copyString(dateyyyymmdd);
+            });
+            this.menu.addMenuItem(this.datemenu);
+
+            // Epoch
+            this.epochmenu = new PopupMenu.PopupMenuItem('Date — Epoch');
+            this.epochmenu.connect('activate', () => {
+                const epoch = new Date().getTime();
+                this.copyString(epoch.toString());
+            });
+            this.menu.addMenuItem(this.epochmenu);
+
+            // Hash
+            this.hashmenu = new PopupMenu.PopupMenuItem('Random — Hash (16 chars)');
+            this.hashmenu.connect('activate', () => {
+                let hash = "",
+                    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                for (let i = 0; i < 16; i++)
+                    hash += chars.charAt(Math.floor(Math.random() * chars.length));
+                this.copyString(hash);
+            });
+            this.menu.addMenuItem(this.hashmenu);
+
             // Lorem Ipsum text
-            this.lipsummenu = new PopupMenu.PopupMenuItem('Lorem Ipsum');
+            this.lipsummenu = new PopupMenu.PopupMenuItem('Random — Lorem Ipsum');
             this.lipsummenu.connect('activate', () => {
                 let sentence =
                     "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua velit egestas dui id ornare arcu odio ut sem nulla lorem sed risus ultricies tristique nulla aliquet enim tortor at nibh sed pulvinar proin gravida hendrerit lectus a risus sed vulputate odio ut enim cursus euismod quis viverra nibh cras pulvinar quis enim lobortis scelerisque fermentum dui faucibus in ornare dictumst vestibulum rhoncus est pellentesque elit blandit cursus risus at ultrices mi tempus nulla pharetra diam sit amet nisl suscipit adipiscing";
@@ -58,36 +102,17 @@ const Indicator = GObject.registerClass(
             });
             this.menu.addMenuItem(this.lipsummenu);
 
-            // Date
-            this.datemenu = new PopupMenu.PopupMenuItem('Date as YYYY-MM-DD');
-            this.datemenu.connect('activate', () => {
-                const now = new Date();
-                const offset = now.getTimezoneOffset();
-                const offsetDate = new Date(now.getTime() - (offset * 60 * 1000));
-                const dateyyyymmdd = offsetDate.toISOString().split('T')[0];
-
-                this.copyString(dateyyyymmdd);
+            // Color
+            this.hexcolormenu = new PopupMenu.PopupMenuItem('Random — Hex Color');
+            this.hexcolormenu.connect('activate', () => {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                this.copyString(color);
             });
-            this.menu.addMenuItem(this.datemenu);
-
-            // Epoch
-            this.epochmenu = new PopupMenu.PopupMenuItem('Epoch');
-            this.epochmenu.connect('activate', () => {
-                const epoch = new Date().getTime();
-                this.copyString(epoch.toString());
-            });
-            this.menu.addMenuItem(this.epochmenu);
-
-            // Hash
-            this.hashmenu = new PopupMenu.PopupMenuItem('Random Hash');
-            this.hashmenu.connect('activate', () => {
-                let hash = "",
-                    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                for (let i = 0; i < 7; i++)
-                    hash += chars.charAt(Math.floor(Math.random() * chars.length));
-                this.copyString(hash);
-            });
-            this.menu.addMenuItem(this.hashmenu);
+            this.menu.addMenuItem(this.hexcolormenu);
 
         }
 
