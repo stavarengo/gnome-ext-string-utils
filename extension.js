@@ -24,7 +24,6 @@ import {
 } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const Indicator = GObject.registerClass(
@@ -62,6 +61,14 @@ const Indicator = GObject.registerClass(
             });
             this.menu.addMenuItem(this.datemenu);
 
+            // Date ISO 8601
+            this.dateISOMenu = new PopupMenu.PopupMenuItem('Date — ISO 8601');
+            this.dateISOMenu.connect('activate', () => {
+                let dateISO = new Date().toISOString();
+                this.copyString(dateISO);
+            });
+            this.menu.addMenuItem(this.dateISOMenu);
+
             // Epoch
             this.epochmenu = new PopupMenu.PopupMenuItem('Date — Epoch');
             this.epochmenu.connect('activate', () => {
@@ -69,6 +76,20 @@ const Indicator = GObject.registerClass(
                 this.copyString(epoch.toString());
             });
             this.menu.addMenuItem(this.epochmenu);
+
+            // UUID
+            this.uuidmenu = new PopupMenu.PopupMenuItem('Random — UUID');
+            this.uuidmenu.connect('activate', () => {
+                let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var d = new Date().getTime(); //Timestamp
+                    var r = Math.random() * 16; //random number between 0 and 16
+                    r = (d + r) % 16 | 0;
+                    d = Math.floor(d / 16);
+                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                });
+                this.copyString(uuid);
+            });
+            this.menu.addMenuItem(this.uuidmenu);
 
             // Hash
             this.hashmenu = new PopupMenu.PopupMenuItem('Random — Hash (16 chars)');
@@ -116,10 +137,10 @@ const Indicator = GObject.registerClass(
         }
 
         copyString(text) {
-            // St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, text);
             let clipboard = St.Clipboard.get_default();
             clipboard.set_text(St.ClipboardType.CLIPBOARD, text);
-            Main.notify(`Copied "${text}" to the clipboard.`);
+
+            Main.notify("String has been copied", text);
         }
     });
 
