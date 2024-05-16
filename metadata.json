@@ -2,6 +2,6 @@
     "uuid": "strings@lobau.io",
     "name": "Strings",
     "description": "Copy all kind of useful strings like dates, lorem ipsum, random colors, etc.",
-    "shell-version": ["45", "46"],
+    "shell-version": ["46"],
     "url": "https://gitlab.com/lobau/strings-extension"
 }
